@@ -715,7 +715,7 @@
                                 <button class="btn"  id="btn_newratesandduties" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:5px;" title="Create New Employee" >
                                     <i class="fa fa-file"></i> New </button>
                                 <button class="btn"  id="" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#3498db;color:white;margin-top:10px;margin-left:0px;" title="Name" >
-                                   <displayname id="display_name"></displayname> </button>
+                                   <displayname id="display_name" class="display_name"></displayname> </button>
                                     
                                         <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
                                              <center><h2 style="color:white;font-weight:300;">Rates and Duties</h2></center>
@@ -742,6 +742,44 @@
                             </div> <!--panel default -->
 
                         </div> <!--rates and duties list -->
+
+                        <div id="div_entitlement_list" style="display:none;">
+                           
+                            <div class="panel panel-default">
+                                <button class="btn"  id="btn_cancelentitlement" style="width:50px;font-family: Tahoma, Georgia, Serif;background-color:#e74c3c;color:white;margin-top:10px;margin-left:17px;" title="Create New Employee" >
+                                    <span class="glyphicon glyphicon-arrow-left"></span>
+                
+                                <button class="btn btn_newentitlement"  id="btn_newentitlement" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:5px;" title="Create New Employee" >
+                                    <i class="fa fa-file"></i> new title </button>
+                                <button class="btn"  id="" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#3498db;color:white;margin-top:10px;margin-left:0px;" title="Name" >
+                                   <displayname id="display_name" class="display_name"></displayname> </button>
+                                    
+                                        <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
+                                             <center><h2 style="color:white;font-weight:300;">Entitlement</h2></center>
+                                        </div>
+
+                                    <div class="panel-body table-responsive" style="padding-top:5px;">
+                                        <table id="tbl_entitlement" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Leave Type</th>
+                                                    <th>Short name</th>
+                                                    <th>Is Payable</th>
+                                                    <th>Is Forwardable</th>
+                                                    <th><center>Action</center></th>
+                                                 </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                <div class="panel-footer"></div>
+                            </div> <!--panel default -->
+
+                        </div> <!--entitlement list -->
 
                     </div><!-- .container-fluid -->
                 </div> <!-- #page-content -->
@@ -882,7 +920,7 @@
                         <div class="modal-header" style="background-color:#2ecc71;">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
                             <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Rates and Duties : New</h4>
-                            <p style="color:white;margin:0px;" id="dataname">aw</p>
+                            <p style="color:white;margin:0px;" id="dataname" class="dataname">aw</p>
                         </div>
 
                         <div class="modal-body">
@@ -1055,6 +1093,30 @@
                 </div>
             </div><!---modal-->
 
+            <div id="modal_create_entitlement" class="modal fade modal_create_entitlement" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color:#2ecc71;">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Leave Entitletment : New</h4>
+                            <p style="color:white;margin:0px;" id="dataname" class="dataname">name</p>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="frm_entitlement">
+                                
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btn_createentitlement" type="button" class="btn btn_createentitlement" style="background-color:#2ecc71;color:white;">Save</button>
+                            <button id="btn_cancelcreateentitlement" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div><!---content---->
+                </div>
+                </div>
+            </div><!---modal-->
+
                 <div id="modal_references" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
@@ -1136,7 +1198,7 @@
 <script>
 
 $(document).ready(function(){
-    var dt; var _txnMode; var _txnModeRate; var _selectedID; var _selectedIDrates; var _selectRowObj; var _selectRowObjrates; var _isChecked;
+    var dt; var _txnMode; var _txnModeRate; var _selectedID; var _selectedIDrates; var _selectedIDentitlement; var _selectRowObj; var _selectRowObjrates; var _selectRowObjentitlement; var _isChecked;
 
     var initializeControls=function(){
         dt=$('#tbl_employee_list').DataTable({
@@ -1219,8 +1281,8 @@ $(document).ready(function(){
                 {
                     targets:[4],
                     render: function (data, type, full, meta){
-                        var btn_edit='<button class="btn btn-default btn-sm" name="rates_duties_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
-                        var btn_trash='<button class="btn btn-default btn-sm" name="rates_duties_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+                        var btn_edit='<button class="btn btn-default btn-sm" name="entitlement_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
+                        var btn_trash='<button class="btn btn-default btn-sm" name="entitlement_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 
                         return '<center>'+btn_edit+btn_trash+'</center>';
                     }
@@ -1228,6 +1290,57 @@ $(document).ready(function(){
             ],
             language: {
                          searchPlaceholder: "Search Rates and Duties"
+                     },
+            "rowCallback":function( row, data, index ){
+
+                $(row).find('td').eq(10).attr({
+                    "align": "right"
+                });
+            }
+
+        });
+
+    }
+
+    var getentitlement=function(){
+                    dt_rates=$('#tbl_entitlement').DataTable({
+
+            "dom": '<"toolbar">frtip',
+            "bLengthChange":false,
+            "ajax": {
+            "url": "Entitlement/transaction/getresult",
+            "type": "POST",
+            "bDestroy": true,
+            "data": function ( d ) {
+                return $.extend( {}, d, {
+                    "employee_id": _selectedID //id of the user
+                    } );
+                }
+            },
+            "columns": [
+                {
+                    "targets": [0],
+                    "class":          "details-control1",
+                    "orderable":      false,
+                    "data":           null,
+                    "defaultContent": "",
+                    "bDestroy": true,
+                },
+                { targets:[1],data: "leave_type" },
+                { targets:[2],data: "date_start" },
+                { targets:[3],data: "date_end" },
+                {
+                    targets:[4],
+                    render: function (data, type, full, meta){
+                        var btn_edit='<button class="btn btn-default btn-sm" name="entitlement_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
+                        var btn_trash='<button class="btn btn-default btn-sm" name="entitlement_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+
+                        return '<center>'+btn_edit+btn_trash+'</center>';
+                    }
+                }
+            ],
+            language: {
+                         searchPlaceholder: "Search Entitlements"
                      },
             "rowCallback":function( row, data, index ){
 
@@ -1337,7 +1450,7 @@ $(document).ready(function(){
             if(_isChecked == true){
                _txnMode="ratesduties";
                 $('#dataname').text(_selectedname);
-                $('#display_name').text(_selectedname1);
+                $('.display_name').text(_selectedname1);
                 //alert(_selectedID);
                 hideemployeeList();
                 hideemployeeFields();
@@ -1349,6 +1462,25 @@ $(document).ready(function(){
             }
             
         });
+
+        $('#edit_entitlement').click(function(){
+            if(_isChecked == true){
+               _txnMode="entitlement";
+                $('.dataname').text(_selectedname);
+                $('.display_name').text(_selectedname1);
+                //alert(_selectedname1);
+                hideemployeeList();
+                hideemployeeFields();
+                hideRatesduties();
+                showEntitlement();
+                getentitlement();
+            }
+            else{
+                alert("nothing checked");
+            }
+            
+        });
+        
 
 //SELECT CREATE OPTION WITH TXNMODE
         $('#emp_religion').change(function() {
@@ -1490,6 +1622,16 @@ $(document).ready(function(){
             
         });
 
+        $('#btn_newentitlement').click(function(){
+            clearFields($('#frm_entitlement'));
+            _txnMode="newentitlement";
+
+           // $('#ref_employment_type_id').val(1);//
+
+            $('.modal_create_entitlement').modal('show');
+            
+        });
+
         $('#tbl_employee_list tbody').on('click','button[name="edit_duties"]',function(){
 
             _txnMode="ratesduties";
@@ -1499,7 +1641,7 @@ $(document).ready(function(){
             _selectedname= '[Name : ' + data.emp_fname +' ' + data.emp_mname + ' ' + data.emp_lname + ']';
             _selectedname1= data.emp_fname +' ' + data.emp_mname + ' ' + data.emp_lname;
             $('#dataname').text(_selectedname);
-            $('#display_name').text(_selectedname1);
+            $('.display_name').text(_selectedname1);
             //alert(_selectedID);
             hideemployeeList();
             hideemployeeFields();
@@ -1547,6 +1689,31 @@ $(document).ready(function(){
 
             $('#modal_confirmation').modal('show');
         });
+
+        $('#tbl_rates_duties_list tbody').on('click','button[name="entitlement_edit"]',function(){
+            _txnMode="editentitlement";
+            $('.modal_create_entitlement').modal('show');
+            _selectRowObjentitlement=$(this).closest('tr');
+            var data=dt_rates.row(_selectRowObjentitlement).data();
+            _selectedIDentitlement=data.emp_leaves_entitlement_id;
+            alert(_selectedIDentitlement);
+            //console.log(_selectedID);
+            //$('#ref_employment_type_id').val(data.ref_employment_type_id);//
+           // alert($('input[name="tax_exempt"]').length);
+            //$('input[name="tax_exempt"]').val(0);
+            //$('input[name="inventory"]').val(data.is_inventory);
+
+            $('input,textarea').each(function(){
+                var _elem=$(this);
+                $.each(data,function(name,value){
+                    if(_elem.attr('name')==name){
+                        _elem.val(value);
+                    }
+                });
+            });
+
+
+        })
 
         $('#tbl_rates_duties_list tbody').on('click','button[name="rates_duties_edit"]',function(){
             _txnMode="editratesandduties";
@@ -1627,6 +1794,7 @@ $(document).ready(function(){
                 }
             });
         });
+        // for back and cancel buttons to destroy datatables
         $('#btn_cancelempfields').click(function(){
             hideemployeeFields();
             hideRatesduties();
@@ -1639,6 +1807,15 @@ $(document).ready(function(){
             showemployeeList();
             $('#tbl_rates_duties_list').dataTable().fnDestroy();
             $('#tbl_rates_duties_list').fnClearTable();
+        });
+
+        $('#btn_cancelentitlement').click(function(){
+            hideRatesduties();
+            hideemployeeFields();
+            hideEntitlement();
+            showemployeeList();
+            $('#tbl_entitlement').dataTable().fnDestroy();
+            $('#tbl_entitlement').fnClearTable();
         });
 
        /* $('#btn_save').click(function(){
@@ -1694,6 +1871,36 @@ $(document).ready(function(){
                 }
             }
         });
+
+            //CREATE ENTITLEMENT
+        $('.btn_createentitlement').click(function(){
+            if(validateRequiredFields($('#frm_entitlement'))){
+                if(_txnMode=="newentitlement"){
+                    createEntitlement().done(function(response){
+                        showNotification(response);
+                        dt_entitlement.row.add(response.row_added[0]).draw();
+                        dt.row(_selectRowObj).data(response.row_update[0]).draw(); //for updating employee list 
+                        clearFields($('#frm_ratesandduties'))
+s
+                    }).always(function(){
+                        showSpinningProgress($('#btn_createratesandduties'));
+                    });
+                    return;
+                }
+                if(_txnMode=="editentitlement"){
+                    updateEntitlement().done(function(response){
+                        showNotification(response);
+                        dt_entitlement.row(_selectRowObjentitlement).data(response.row_updated[0]).draw();
+                        dt.row(_selectRowObj).data(response.row_update[0]).draw(); //for updating employee list 
+                        clearFields($('#frm_entitlement'))
+                    }).always(function(){
+                        showSpinningProgress($('#btn_createentitlement'));
+                    });
+                    return;
+                }
+            }
+        });
+
             //CREATE RATES AND DUTIES
         $('#btn_createratesandduties').click(function(){
             if(validateRequiredFields($('#frm_ratesandduties'))){
@@ -1951,6 +2158,31 @@ s
         });
     };
 
+    var createEntitlement=function(){
+        var _data=$('#frm_entitlement').serializeArray();
+        _data.push({name : "employee_id" ,value : _selectedID});
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Entitlement/transaction/create",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#btn_createentitlement'))
+        });
+    };
+
+    var updateEntitlement=function(){
+        var _data=$('#frm_entitlement').serializeArray();
+        _data.push({name : "emp_rates_duties_id" ,value : _selectedIDEntitlement});
+        _data.push({name : "employee_id" ,value : _selectedID});
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Entitlement/transaction/update",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#btn_createentitlement'))
+        });
+    };
+
     var removeEmployee=function(){
         return $.ajax({
             "dataType":"json",
@@ -2085,6 +2317,14 @@ s
 
     var showRatesduties=function(){
         $('#div_rates_duties_list').show();
+    };
+
+    var hideEntitlement=function(){
+        $('#div_entitlement_list').hide();
+    };
+
+    var showEntitlement=function(){
+        $('#div_entitlement_list').show();
     };
 
     var showNotification=function(obj){
